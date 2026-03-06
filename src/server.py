@@ -5,20 +5,35 @@ from fastmcp import FastMCP
 
 mcp = FastMCP("Reflect MCP Server")
 
-@mcp.tool(description="Append text to today's daily note in Reflect")
-def append_to_reflect(text: str) -> str:
-    token = os.environ["REFLECT_TOKEN"]
-    graph_id = os.environ["REFLECT_GRAPH_ID"]
+REFLECT_TOKEN = os.environ["REFLECT_TOKEN"]
+GRAPH_ID = os.environ["REFLECT_GRAPH_ID"]
+HEADERS = {"Authorization": f"Bearer {REFLECT_TOKEN}"}
+BASE = f"https://reflect.app/api/v1/graphs/{GRAPH_ID}"
 
+@mcp.tool(description="Append text to the [[Inbox]] list in today's daily note in Reflect")
+def append_to_daily_note(text: str) -> str:
     response = requests.put(
-        f"https://reflect.app/api/v1/graphs/{graph_id}/daily-notes",
-        headers={"Authorization": f"Bearer {token}"},
+        f"{BASE}/daily-notes",
+        headers=HEADERS,
         json={
             "text": text,
-            "transform_type": "list-append"
+            "transform_type": "list-append",
+            "list_name": "[[Inbox]]"
         }
     )
-    return "Appended to Reflect!" if response.ok else f"Failed: {response.status_code} {response.text}"
+    return "Appended to Inbox!" if response.ok else f"Failed: {response.status_code} {response.text}"
+
+@mcp.tool(description="Create a new note in Reflect with a title and content")
+def create_note(title: str, content: str) -> str:
+    response = requests.post(
+        f"{BASE}/notes",
+        headers=HEADERS,
+        json={
+            "subject": title,
+            "content_markdown": content
+        }
+    )
+    return "Note created!" if response.ok else f"Failed: {response.status_code} {response.text}"
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 8000))
