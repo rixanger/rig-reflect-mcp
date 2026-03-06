@@ -3,7 +3,7 @@ import os
 import requests
 from fastmcp import FastMCP
 
-mcp = FastMCP("Reflect MCP Server")
+mcp = FastMCP("Reflect MCP Server", stateless_http=True, json_response=True)
 
 REFLECT_TOKEN = os.environ["REFLECT_TOKEN"]
 GRAPH_ID = os.environ["REFLECT_GRAPH_ID"]
@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print(f"Starting Reflect MCP Server on {host}:{port}")
 
     mcp.run(
-        transport="http",
+        transport="streamable-http",
         host=host,
         port=port,
         stateless_http=True
