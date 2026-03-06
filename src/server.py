@@ -6,7 +6,7 @@ from fastmcp import FastMCP
 mcp = FastMCP(
     name="reflect-app",
     instructions="""Use this integration to save notes to the user's Reflect app. 
-    Use append_to_daily_note to add items to the user's daily note Inbox list. 
+    Use append_to_daily_note to add items to the user's Inbox in their daily note. 
     Use create_note to create a brand new standalone note. 
     Always use this when the user asks to save, note, remember, or add something to Reflect."""
 )
@@ -48,7 +48,8 @@ if __name__ == "__main__":
     print(f"Starting Reflect MCP Server on {host}:{port}")
 
     mcp.run(
-        transport="http",
+        transport="streamable-http",
         host=host,
-        port=port
+        port=port,
+        stateless_http=True
     )
