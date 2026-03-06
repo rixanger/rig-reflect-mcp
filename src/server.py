@@ -42,7 +42,7 @@ if __name__ == "__main__":
     print(f"Starting Reflect MCP Server on {host}:{port}")
 
     mcp.run(
-        transport="streamable-http",
+        transport="http",
         host=host,
         port=port,
         stateless_http=True
