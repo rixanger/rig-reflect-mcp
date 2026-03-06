@@ -3,7 +3,7 @@ import os
 import requests
 from fastmcp import FastMCP
 
-mcp = FastMCP("Reflect MCP Server", stateless_http=True, json_response=True)
+mcp = FastMCP("Reflect MCP Server")
 
 REFLECT_TOKEN = os.environ["REFLECT_TOKEN"]
 GRAPH_ID = os.environ["REFLECT_GRAPH_ID"]
